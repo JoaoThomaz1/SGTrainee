@@ -99,34 +99,57 @@ do while nContagem < 5
 
 enddo
 
+cSituacaoMateria1 := ""
+cSituacaoMateria2 := ""
+cSituacaoMateria3 := ""
+cSituacaoMateria4 := ""
+nDependencias     := 0
 
 If nNotaFinal1 < 6 .or. nFaltasDisciplina1 > 48
     nDependencias++
-    cSituacaoMateria1 := "Reprovado!"
+    cSituacaoMateria1 := "Reprovado! Com Dependencia na Materia"
+else
+    cSituacaoMateria1 := "Aprovado!"
 endif
 
-If nNotaFinal1 < 6 .or. nFaltasDisciplina1 > 48
+If nNotaFinal2 < 6 .or. nFaltasDisciplina2 > 48
     nDependencias++
-    cSituacaoMateria2 := "Reprovado!"
+    cSituacaoMateria2 := "Reprovado! Com Dependencia na Materia"
+else
+    cSituacaoMateria2 := "Aprovado!"
 endif
 
-If nNotaFinal1 < 6 .or. nFaltasDisciplina1 > 48
+If nNotaFinal3 < 6 .or. nFaltasDisciplina3 > 48
     nDependencias++
-    cSituacaoMateria3 := "Reprovado!"
+    cSituacaoMateria3 := "Reprovado! Com Dependencia na Materia"
+else
+    cSituacaoMateria3 := "Aprovado!"
 endif
 
-If nNotaFinal1 < 6 .or. nFaltasDisciplina1 > 48
+If nNotaFinal4 < 6 .or. nFaltasDisciplina4 > 48
     nDependencias++
-    cSituacaoMateria4 := "Reprovado!"
+    cSituacaoMateria4 := "Reprovado! Com Dependencia na Materia"
+else
+    cSituacaoMateria4 := "Aprovado!"
 endif
 
 nValorMensalidade := nValorMensalidade + ( nValorMensalidade * nDependencias * 0.15 ) 
 
 
 
-@ 15,02 say nFaltasDisciplina1
-@ 16,02 say nFaltasDisciplina2
-@ 17,02 say nFaltasDisciplina3
-@ 18,02 say nFaltasDisciplina4
+@ 15,02 say "A nova mensalidade e: " + AllTrim( Str( nValorMensalidade ) )
+
+@ 16,02 say cDisciplina1 + " " + cSituacaoMateria1
+@ 17,02 say cDisciplina2 + " " + cSituacaoMateria2
+@ 18,02 say cDisciplina3 + " " + cSituacaoMateria3 
+@ 19,02 say cDisciplina4 + " " + cSituacaoMateria4
+
+If nDependencias > 2
+    @ 22,10 say "Aluno nao foi aprovado de ano, reprovou por excesso de Dependecias!"
+Elseif nDependencias > 0
+    @ 22,10 say "Aluno Foi Aprovado! Com " + Alltrim( Str( nDependencias ) ) + " Dependencias!"
+Else
+    @ 22,10 say "Aluno foi Aprovado!"
+endif
 
 Inkey(0)
