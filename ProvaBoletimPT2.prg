@@ -35,6 +35,7 @@ nFaltasDisciplina4:= 0
 nColuna1          := 10
 nColuna2          := 15
 nContagem         := 1
+cBolsista         := Space(1)
 
 //Corpo do Programa
 @ 02,02 say cNomeColegio + Space(10) + cEndereco
@@ -52,6 +53,28 @@ nContagem         := 1
 @ 04,28 Get cCursoEscolhido     picture "@!"            valid !Empty ( cCursoEscolhido )
 @ 04,55 Get nValorMensalidade   picture "@E 999,999.99"
 read
+
+//Bolsista
+@ 11,13 to 15,65
+
+@ 12,28 say "Bolsista? "
+@ 14,15 say "[ I ]Integral  [ P ]Parcial    [ N ]Nao Bolsista"
+
+@ 12,40 get cBolsista picture "@!"valid !Empty( cBolsista ) .and. ( cBolsista == "I" .or. cBolsista == "P" .or. cBolsista == "N" )
+read
+
+cBolsistaTexto := ""
+
+if cBolsista == "I"
+    cBolsistaTexto := "Integral."
+elseif cBolsista == "P"
+    cBolsistaTexto := "Parcial."
+else
+    cBolsistaTexto := "Nao Bolsista."
+endif
+
+@ 10,10 clear to 16,65
+@ 05,30 say "Bolsista? " + cBolsistaTexto
 
 @ 06,02 Get cDisciplina1 picture "@!"  valid !Empty ( cDisciplina1 )
 @ 08,02 Get cDisciplina2 picture "@!"  valid !Empty ( cDisciplina2 )
@@ -71,14 +94,14 @@ do while nContagem < 5
     nFaltas4          := 0
 
     //Notas
-    @ 06,nColuna1 Get nNota1       picture "999" valid !Empty ( nNota1 )
-    @ 06,nColuna2 Get nFaltas1     picture "999" valid !Empty ( nFaltas1 )
-    @ 08,nColuna1 Get nNota2       picture "999" valid !Empty ( nNota2 )  
-    @ 08,nColuna2 Get nFaltas2     picture "999" valid !Empty ( nFaltas2 )  
-    @ 10,nColuna1 Get nNota3       picture "999" valid !Empty ( nNota3 )
-    @ 10,nColuna2 Get nFaltas3     picture "999" valid !Empty ( nFaltas3 )
-    @ 12,nColuna1 Get nNota4       picture "999" valid !Empty ( nNota4 )
-    @ 12,nColuna2 Get nFaltas4     picture "999" valid !Empty ( nFaltas4 )
+    @ 06,nColuna1 Get nNota1       picture "999" valid !Empty ( nNota1   ) .and. nNota1   <= 100 
+    @ 06,nColuna2 Get nFaltas1 >= 0                                        .and. nFaltas1 <= 65
+    @ 08,nColuna1 Get nNota2       picture "999" valid !Empty ( nNota2   ) .and. nNota2   <= 100 
+    @ 08,nColuna2 Get nFaltas2 >= 0                                        .and. nFaltas2 <= 65
+    @ 10,nColuna1 Get nNota3       picture "999" valid !Empty ( nNota3   ) .and. nNota3   <= 100 
+    @ 10,nColuna2 Get nFaltas3 >= 0                                        .and. nFaltas3 <= 65
+    @ 12,nColuna1 Get nNota4       picture "999" valid !Empty ( nNota4   ) .and. nNota4   <= 100 
+    @ 12,nColuna2 Get nFaltas4 >= 0                                        .and. nFaltas4 <= 65
     Read
     
     nNotaFinal1        += nNota1
@@ -98,6 +121,11 @@ do while nContagem < 5
     nContagem++
 
 enddo
+
+nNotaFinal1 := nNotaFinal1 / 4
+nNotaFinal2 := nNotaFinal2 / 4
+nNotaFinal3 := nNotaFinal3 / 4
+nNotaFinal4 := nNotaFinal4 / 4
 
 cSituacaoMateria1 := ""
 cSituacaoMateria2 := ""
