@@ -1,14 +1,22 @@
 //Joao Vitor Rodrigues Thomaz
-
+Set Color To N/W+
 
 Clear
 
+SetScoreboard Off
+Set Date To British
+Set Epoch To 1940
+
 nIdadeUsuario := 0
+dAtual        := date()
+dNascimento   := CToD("")
 
-@ 05,25 say "Idade: "
+@ 05,25 say "Data de Nascimento: "
 
-@ 05,37 get nIdadeUsuario picture "999" valid!Empty(nIdadeUsuario)
+@ 05,37 get dNascimento valid!Empty(dNascimento) .and. dNascimento <= dAtual
 read
+
+nIdadeUsuario 
 
 if nIdadeUsuario > 21
     @ 08,20 say "O usuario tem mais de 21 Anos!"
