@@ -1,11 +1,12 @@
+//João Vitor Rodrigues Thomaz
 Set Color To B/W+
 
 Clear
 
 Set ScoreBoard Off
 Set Date To British
-Set Epoch To 1930
-Set Century On
+Set Epoch To 1940
+
 
 nQtdEmpregados := 0
 

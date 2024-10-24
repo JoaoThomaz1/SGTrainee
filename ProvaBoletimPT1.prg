@@ -1,3 +1,4 @@
+//João Vitor Rodrigues Thomaz
 Set color to N+/W
 
 Clear
@@ -6,8 +7,8 @@ Setmode(25,80)
 
 Set ScoreBoard Off
 Set Date to British
-Set Epoch to 1930
-Set Century On
+Set Epoch to 1940
+
 
 //Variaveis
 cNomeColegio      := "Colegio Santa Cruz"
