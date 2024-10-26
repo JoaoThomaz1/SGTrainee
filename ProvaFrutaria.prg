@@ -70,7 +70,7 @@ do while .t.
         
                 Clear
                 
-                @ 02,30 say cNomeEmpresa + Space(65) + "PEDIDO N°: " + AllTrim( Str( nNumeroPedido ) )
+                @ 02,30 say cNomeEmpresa + Space(10) + "PEDIDO: " + AllTrim( Str( nNumeroPedido ) )
                 @ 03,50 say "DATA DO PEDIDO: "
                 @ 04,05 say "CLIENTE: " + Space(16) + "LIMITE CREDITO: R$"
                 @ 06,05 say "CODIGO" + Space(3) + "DESCRICAO" + Space(6) + "QTDE." + Space(3) + "PRECO UNIT." + Space(3) + "DESC.%" + Space(3) + "TOTAL"
