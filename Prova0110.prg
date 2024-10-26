@@ -62,6 +62,7 @@ nFaltaMaxima        := 8
 cDependeciaMateria1 := "N"
 cDependeciaMateria2 := "N"
 cDependeciaMateria3 := "N"
+lReprovadoFalta     := .f.
 
 //Variavel para coloracao, letras e espacos
 cColorPadrao        := "N+/W"
@@ -69,6 +70,7 @@ cCorAprovado        := "G/W"
 cCorMedia           := "R/W"
 
 @ 01,00 to 24,79 double
+@ 03,01 to 03,78
 @ 06,01 to 06,78
 @ 08,01 to 08,78
 @ 12,01 to 12,78
@@ -76,22 +78,24 @@ cCorMedia           := "R/W"
 @ 09,21 to 11,21
 @ 09,29 to 11,29
 @ 09,37 to 11,37
-@ 09,43 to 11,43
+@ 09,45 to 11,45
+@ 09,61 to 11,61
+@ 09,69 to 11,69
 
 //Cabecalho do boletim
 @ 02,04 say cNomeFaculdade + Space(5) + cEnderecoFaculdade + Space(8) + DToC( dAtual )
-@ nLinhaDadosAluno,02 say "ALUNO: " + Space(15) + "SEXO: " + Space(10) + "DATA DE NASCIMENTO: "
-@ 05,02 say "CURSO: " + Space(25) + "SERIE: " + Space(5) + "MENSALIDADE: "
+@ nLinhaDadosAluno,02 say "ALUNO: " + Space(15) + "SEXO: " + Space(20) + "DATA DE NASCIMENTO: "
+@ 05,02 say "CURSO: " + Space(25) + "SERIE: " + Space(16) + "MENSALIDADE: "
 @ 06,14 say " BIM 1" + Space(3) + "BIM 2" + Space(3) + "BIM 3" + Space(3) + "BIM 4"
 @ 07,01 say " DISCIPLINA | N | F | N | F | N | F | N | F |" + Space(15) + "| MEDIA |" + " FALTAS "
 
 //Get do Cabecalho 
 @ nLinhaDadosAluno,09 get cNomeAluno        picture cPictureCaracter    valid !Empty( cNomeAluno )
 @ nLinhaDadosAluno,30 get cSexoGenero       picture cPictureCaracter    valid cSexoGenero = "M" .or. cSexoGenero = "F"
-@ nLinhaDadosAluno,58 get dNascimento                                   valid !Empty( dNascimento ) .and. dNascimento < dAtual
+@ nLinhaDadosAluno,70 get dNascimento                                   valid !Empty( dNascimento ) .and. dNascimento < dAtual
 @ nLinhaDadosCurso,09 get cCursoEscolhido   picture cPictureCaracter    valid !Empty( cCursoEscolhido )
 @ nLinhaDadosCurso,43 get nSerieAtual       picture "9"                 valid nSerieAtual >= nMinimoSerie .and. nSerieAtual <= nMaximoSerie
-@ nLinhaDadosCurso,60 get nMensalidade      picture cPictureMensalidade valid !Empty( nMensalidade ) .and. nMensalidade >= 0
+@ nLinhaDadosCurso,70 get nMensalidade      picture cPictureMensalidade valid !Empty( nMensalidade ) .and. nMensalidade >= 0
 
 //If para verificar Media minima e o MAximo de faltas permitida
 if nSerieAtual <= 4
@@ -113,12 +117,17 @@ endif
 @ nLinhaMateria1,42              get nFalta4Materia picture cPictureNotaFalta valid nFalta4Materia >= nMinimoNotaFalta .and. nFalta4Materia <= nMaximoFalta color ( cColorPadrao )
 read
 
+if nFalta1Materia > nFaltaMaxima .or. nFalta2Materia > nFaltaMaxima .or. nFalta3Materia > nFaltaMaxima .or. nFalta4Materia > nFaltaMaxima
+    lReprovadoFalta := .t.
+endif
+
+
 //Media Materia1
 nMediaMateria1      := ( nNota1Materia + nNota2Materia + nNota3Materia + nNota4Materia ) / 4
 nFaltaTotalMateria1 := nFalta1Materia + nFalta2Materia + nFalta3Materia + nFalta4Materia
 
 //if para definir a cor da media e Dependencia
-if nMediaMateria1 < nMediaMinima .or. nFaltaTotalMateria1 > nFaltaMaxima
+if nMediaMateria1 < nMediaMinima .or. lAprovadoFalta
     nDependencias++
     cDependeciaMateria1 := "S"
     if nMediaMateria1 >= nMediaMinima
@@ -139,6 +148,7 @@ nFalta1Materia      := 0
 nFalta2Materia      := 0
 nFalta3Materia      := 0
 nFalta4Materia      := 0
+lReprovadoFalta     := .f.
 cCorMedia           := "R/W"
 nLinhaMateria1++
 
@@ -154,12 +164,16 @@ nLinhaMateria1++
 @ nLinhaMateria1,42              get nFalta4Materia picture cPictureNotaFalta valid nFalta4Materia >= nMinimoNotaFalta .and. nFalta4Materia <= nMaximoFalta color ( cColorPadrao )
 read
 
+if nFalta1Materia > nFaltaMaxima .or. nFalta2Materia > nFaltaMaxima .or. nFalta3Materia > nFaltaMaxima .or. nFalta4Materia > nFaltaMaxima
+    lReprovadoFalta := .t.
+endif
+
 //Media Materia 2
 nMediaMateria2      := ( nNota1Materia + nNota2Materia + nNota3Materia + nNota4Materia ) / 4
 nFaltaTotalMateria2 := nFalta1Materia + nFalta2Materia + nFalta3Materia + nFalta4Materia
 
 //if para definir a cor da media e Dependencia
-if nMediaMateria2 < nMediaMinima .or. nFaltaTotalMateria2 > nFaltaMaxima
+if nMediaMateria2 < nMediaMinima .or. lAprovadoFalta
     nDependencias++
     cDependeciaMateria2 := "S"
     if nMediaMateria2 >= nMediaMinima
@@ -180,6 +194,7 @@ nFalta1Materia      := 0
 nFalta2Materia      := 0
 nFalta3Materia      := 0
 nFalta4Materia      := 0
+lReprovadoFalta     := .f.
 cCorMedia           := "R/W"
 nLinhaMateria1++
 
@@ -195,12 +210,16 @@ nLinhaMateria1++
 @ nLinhaMateria1,42              get nFalta4Materia picture cPictureNotaFalta valid nFalta4Materia >= nMinimoNotaFalta .and. nFalta4Materia <= nMaximoFalta color ( cColorPadrao )
 read
 
+if nFalta1Materia > nFaltaMaxima .or. nFalta2Materia > nFaltaMaxima .or. nFalta3Materia > nFaltaMaxima .or. nFalta4Materia > nFaltaMaxima
+    lReprovadoFalta := .t.
+endif
+
 //Media Materia 3
 nMediaMateria3      := ( nNota1Materia + nNota2Materia + nNota3Materia + nNota4Materia ) / 4
 nFaltaTotalMateria3 := nFalta1Materia + nFalta2Materia + nFalta3Materia + nFalta4Materia
 
 //if para definir a cor da media e Dependencia
-if nMediaMateria3 < nMediaMinima .or. nFaltaTotalMateria3 > nFaltaMaxima
+if nMediaMateria3 < nMediaMinima .or. lAprovadoFalta
     nDependencias++
     cDependeciaMateria3 := "S"
     if nMediaMateria3 >= nMediaMinima
@@ -236,7 +255,7 @@ nNovaMensalidade := nMensalidade + ( nMensalidade * ( nDependencias * 0.20 ) )
 @ 17,14 say cNomeMateria3 + " MEDIA " + Alltrim( Transform( nMediaMateria3, cPictureNotaFalta ) ) + " DEPENDENCIA? " + cDependeciaMateria3 color ( cColorPadrao )
 
 //Declaracao nova mensalidade
-@ 20,18 to 22,60 double
+@ 20,18 to 22,55 double
 
 @ 21,20 say "NOVO VALOR DA MENSALIDADE: " + Alltrim( Transform( nNovaMensalidade, cPictureMensalidade ) ) color ( cColorPadrao )
 
