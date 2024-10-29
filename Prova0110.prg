@@ -1,5 +1,4 @@
 //Joao Vitor Rodrigues Thomaz
-//21:40h
 
 Set Color to N+/W
 
@@ -17,7 +16,6 @@ dNascimento         := CToD("")
 nSerieAtual         := 0
 cSexoGenero         := Space(1)
 nMensalidade        := 0
-dAtual              := date()
 nNovaMensalidade    := 0
 
 //Dados das Materias, Nomes, Notas e Faltas
@@ -66,9 +64,65 @@ lReprovadoFalta     := .f.
 
 //Variavel para coloracao, letras e espacos
 cColorPadrao        := "N+/W"
-cCorAprovado        := "G/W"
-cCorMedia           := "R/W"
+cCorReprovado       := "R/W"
+cCorMedia           := "G/W"
 
+//Datas
+dAtual              := date()
+nMes                := Month(dAtual)
+nAno                := Year (dAtual)
+nDia                := Day  (dAtual)
+nDiaSemana          := DoW  (dAtual)
+cMesExtenso         := ""
+cSemanaExt          := ""
+
+//Define o Mes
+If nMes     == 1
+    cMesExtenso := "Janeiro"
+Elseif nMes == 2
+    cMesExtenso := "Fevereiro"
+Elseif nMes == 3
+    cMesExtenso := "Marco"
+Elseif nMes == 4
+    cMesExtenso := "Abril"
+Elseif nMes == 5
+    cMesExtenso := "Maio"
+Elseif nMes == 6
+    cMesExtenso := "Junho"
+Elseif nMes == 7
+    cMesExtenso := "Julho"
+Elseif nMes == 8
+    cMesExtenso := "Agosto"
+Elseif nMes == 9
+    cMesExtenso := "Setembro"
+Elseif nMes == 10
+    cMesExtenso := "Outubro"
+Elseif nMes == 11
+    cMesExtenso := "Novembro"
+Elseif nMes == 12
+    cMesExtenso := "Dezembro"
+Endif
+
+//Define o dia da Semana
+If nDiaSemana == 1
+    cSemanaExt := "Domingo"
+Elseif nDiaSemana == 2
+    cSemanaExt := "Segunda-Feira"
+Elseif nDiaSemana == 3
+    cSemanaExt := "Terca-Feira"
+Elseif nDiaSemana == 4
+    cSemanaExt := "Quarta-Feira"
+Elseif nDiaSemana == 5
+    cSemanaExt := "Quinta-Feira"
+Elseif nDiaSemana == 6
+    cSemanaExt := "Sexta-Feira"
+Elseif nDiaSemana == 7
+    cSemanaExt := "Sabado"
+Endif
+
+@ 00,09 say "Maringa, " + Transform( nDia, "99" ) + " de " + cMesExtenso + " de " + Transform( nAno, "9999" ) + Space(3) + " ( " + cSemanaExt + " )"
+
+//Molduras e Divisoes dos dados
 @ 01,00 to 24,79 double
 @ 03,01 to 03,78
 @ 06,01 to 06,78
@@ -79,15 +133,15 @@ cCorMedia           := "R/W"
 @ 09,29 to 11,29
 @ 09,37 to 11,37
 @ 09,45 to 11,45
-@ 09,61 to 11,61
-@ 09,69 to 11,69
+@ 09,62 to 11,62
+@ 09,70 to 11,70
 
 //Cabecalho do boletim
 @ 02,04 say cNomeFaculdade + Space(5) + cEnderecoFaculdade + Space(8) + DToC( dAtual )
 @ nLinhaDadosAluno,02 say "ALUNO: " + Space(15) + "SEXO: " + Space(20) + "DATA DE NASCIMENTO: "
 @ 05,02 say "CURSO: " + Space(25) + "SERIE: " + Space(16) + "MENSALIDADE: "
 @ 06,14 say " BIM 1" + Space(3) + "BIM 2" + Space(3) + "BIM 3" + Space(3) + "BIM 4"
-@ 07,01 say " DISCIPLINA | N | F | N | F | N | F | N | F |" + Space(15) + "| MEDIA |" + " FALTAS "
+@ 07,01 say " DISCIPLINA | N | F | N | F | N | F | N | F |" + Space(16) + "| MEDIA |" + " FALTAS "
 
 //Get do Cabecalho 
 @ nLinhaDadosAluno,09 get cNomeAluno        picture cPictureCaracter    valid !Empty( cNomeAluno )
@@ -96,6 +150,7 @@ cCorMedia           := "R/W"
 @ nLinhaDadosCurso,09 get cCursoEscolhido   picture cPictureCaracter    valid !Empty( cCursoEscolhido )
 @ nLinhaDadosCurso,43 get nSerieAtual       picture "9"                 valid nSerieAtual >= nMinimoSerie .and. nSerieAtual <= nMaximoSerie
 @ nLinhaDadosCurso,70 get nMensalidade      picture cPictureMensalidade valid !Empty( nMensalidade ) .and. nMensalidade >= 0
+read
 
 //If para verificar Media minima e o MAximo de faltas permitida
 if nSerieAtual <= 4
@@ -127,11 +182,11 @@ nMediaMateria1      := ( nNota1Materia + nNota2Materia + nNota3Materia + nNota4M
 nFaltaTotalMateria1 := nFalta1Materia + nFalta2Materia + nFalta3Materia + nFalta4Materia
 
 //if para definir a cor da media e Dependencia
-if nMediaMateria1 < nMediaMinima .or. lAprovadoFalta
+if nMediaMateria1 < nMediaMinima .or. lReprovadoFalta
     nDependencias++
     cDependeciaMateria1 := "S"
-    if nMediaMateria1 >= nMediaMinima
-        cCorMedia := cCorAprovado
+    if nMediaMateria1 < nMediaMinima
+        cCorMedia := cCorReprovado 
     endif
 endif
 
@@ -149,7 +204,7 @@ nFalta2Materia      := 0
 nFalta3Materia      := 0
 nFalta4Materia      := 0
 lReprovadoFalta     := .f.
-cCorMedia           := "R/W"
+cCorMedia           := "G/W"
 nLinhaMateria1++
 
 //Get Materia 2, notas e Faltas
@@ -173,11 +228,11 @@ nMediaMateria2      := ( nNota1Materia + nNota2Materia + nNota3Materia + nNota4M
 nFaltaTotalMateria2 := nFalta1Materia + nFalta2Materia + nFalta3Materia + nFalta4Materia
 
 //if para definir a cor da media e Dependencia
-if nMediaMateria2 < nMediaMinima .or. lAprovadoFalta
+if nMediaMateria2 < nMediaMinima .or. lReprovadoFalta
     nDependencias++
     cDependeciaMateria2 := "S"
-    if nMediaMateria2 >= nMediaMinima
-        cCorMedia := cCorAprovado
+    if nMediaMateria2 < nMediaMinima
+        cCorMedia := cCorReprovado 
     endif
 endif
 
@@ -195,7 +250,7 @@ nFalta2Materia      := 0
 nFalta3Materia      := 0
 nFalta4Materia      := 0
 lReprovadoFalta     := .f.
-cCorMedia           := "R/W"
+cCorMedia           := "G/W"
 nLinhaMateria1++
 
 //Get Materia 3, notas e Faltas
@@ -219,11 +274,11 @@ nMediaMateria3      := ( nNota1Materia + nNota2Materia + nNota3Materia + nNota4M
 nFaltaTotalMateria3 := nFalta1Materia + nFalta2Materia + nFalta3Materia + nFalta4Materia
 
 //if para definir a cor da media e Dependencia
-if nMediaMateria3 < nMediaMinima .or. lAprovadoFalta
+if nMediaMateria3 < nMediaMinima .or. lReprovadoFalta
     nDependencias++
     cDependeciaMateria3 := "S"
-    if nMediaMateria3 >= nMediaMinima
-        cCorMedia := cCorAprovado
+    if nMediaMateria3 < nMediaMinima
+        cCorMedia := cCorReprovado 
     endif
 endif
 
@@ -231,12 +286,12 @@ endif
 @ nLinhaMateria1,64 say Alltrim( Transform( nMediaMateria3, cPictureNotaFalta ) ) color ( cCorMedia )
 @ nLinhaMateria1,72 say Alltrim( Transform( nFaltaTotalMateria3, cPictureNotaFalta ) )
 
-cCorMedia := "R/W"
-
 //Situacao do aluno
 If nDependencias <= nMaximoDependencias
     cSituacaoAluno := "APROVADO!"
-    cCorMedia      := cCorAprovado
+    cCorMedia := "G/W"
+else
+    cCorMedia := cCorReprovado
 endif
 
 //Calculo da nova Mensalidade
