@@ -37,7 +37,6 @@ cPictureValorFip:= "@E 9,999,999.99"
 //Validadores
 dAtual          := date()
 nAnoAtual       := Year (dAtual)
-nMes            := Month(dAtual)
 cMesExtenso     := ""
 cValidSexoClient:= "MF"
 cValidTipVeiculo:= "PEL"
@@ -46,44 +45,47 @@ nValidacaoAnoCnh:= 0
 //Cores
 cCorPadrao      := "N/W+"
 
-//Define o Mes
-If nMes     == 1
-    cMesExtenso := "Janeiro"
-Elseif nMes == 2
-    cMesExtenso := "Fevereiro"
-Elseif nMes == 3
-    cMesExtenso := "Marco"
-Elseif nMes == 4
-    cMesExtenso := "Abril"
-Elseif nMes == 5
-    cMesExtenso := "Maio"
-Elseif nMes == 6
-    cMesExtenso := "Junho"
-Elseif nMes == 7
-    cMesExtenso := "Julho"
-Elseif nMes == 8
-    cMesExtenso := "Agosto"
-Elseif nMes == 9
-    cMesExtenso := "Setembro"
-Elseif nMes == 10
-    cMesExtenso := "Outubro"
-Elseif nMes == 11
-    cMesExtenso := "Novembro"
-Elseif nMes == 12
-    cMesExtenso := "Dezembro"
-Endif
 
 //Moldura Dados Vendedor
 @ 00,00 to 02,79
 
 //Cabecalho Dados Vendedor
 @ 00,03 say " SG - COTACOES DE SEGUROS "
-@ 01,01 say "Vendedor: " + Space(42) + "Data da Cotacao: " + DToC(dAtual)
+@ 01,01 say "Vendedor: " + Space(42) + "Data da Cotacao: "
 
 //Get Dados Vendedor
 @ 01,11 get cNomeVendedor picture cPictureCaracter valid !Empty( cNomeVendedor ) color ( cCorPadrao )
 @ 01,70 get dCotacao                               valid dCotacao >= dAtual      color ( cCorPadrao )
 read
+
+//Define o Mes
+nMesCotacao := Month(dCotacao)
+
+If nMesCotacao     == 1
+    cMesExtenso := "Janeiro"
+Elseif nMesCotacao == 2
+    cMesExtenso := "Fevereiro"
+Elseif nMesCotacao == 3
+    cMesExtenso := "Marco"
+Elseif nMesCotacao == 4
+    cMesExtenso := "Abril"
+Elseif nMesCotacao == 5
+    cMesExtenso := "Maio"
+Elseif nMesCotacao == 6
+    cMesExtenso := "Junho"
+Elseif nMesCotacao == 7
+    cMesExtenso := "Julho"
+Elseif nMesCotacao == 8
+    cMesExtenso := "Agosto"
+Elseif nMesCotacao == 9
+    cMesExtenso := "Setembro"
+Elseif nMesCotacao == 10
+    cMesExtenso := "Outubro"
+Elseif nMesCotacao == 11
+    cMesExtenso := "Novembro"
+Elseif nMesCotacao == 12
+    cMesExtenso := "Dezembro"
+Endif
 
 //Moldura Dados Cliente
 @ 04,00 to 08,79
@@ -258,6 +260,12 @@ endif
 @ 08,42 say "Trimestral.: " + Transform( nNovoValorSeguroTrimestralB, cPictureValorFip) color ( cCorSeguroB )
 @ 09,42 say "Anual......: " + Transform( nNovoValorSeguroB,           cPictureValorFip) color ( cCorSeguroB )
 
-@ 12,02 say "Cotacao valida ate " + Transform( nDiaFinalMes, "99" ) + " de " + cMesExtenso + " de " + Transform( nAnoAtual, cPictureAno )
+nMesCotacao := Month( dCotacao ) + 1
+nAnoCotacao := Year ( dCotacao )
+cDataCotacao:= "01/" + Transform( nMesCotacao, "99" ) + "/" + Transform( nAnoCotacao, cPictureAno )
+dCotacaoDia := ctod( cDataCotacao ) - 1
+nDiaFinalMes:= Day( dCotacaoDia )
+
+@ 12,02 say "Cotacao valida ate " + Transform( nDiaFinalMes, "99" ) + " de " + cMesExtenso + " de " + Transform( nAnoCotacao, cPictureAno )
 
 Inkey(0)
