@@ -1,23 +1,36 @@
 //Joao Vitor Rodrigues Thomaz
 
+Set Color to W/RB+
+
 Clear
 
-cNome     := Space(10)
-nLinha    := 10
-nContagem := 1
+//Dados
+cNome            := Space(20)
 
-@ 08,30 say "Nome: "
+//Pictures e Validadores
+nLinha           := 5
+nContagem        := 0
+cPictureCaracter := "@!"
+cPictureContagem := "99"
 
-@ 08,40 get cNome picture "@!" valid !Empty(cNome)
+//Cores
+cCorInicial      := "W/RB+"
+
+//Molduras e Divisoes
+@ 03,08 to 07,43 double
+
+//Cabecalho
+@ nLinha,10 say "NOME: "
+
+//Get do Nome
+@ nLinha,16 get cNome picture cPictureCaracter valid !Empty(cNome) color (cCorInicial)
 read
 
-do while nLinha < 21
-    
-    @ nLinha,25 say AllTrim(Str(nContagem)) + " " + cNome
-
-    nLinha ++   
-    nContagem ++
-
+//Laco de repeticao do nome
+do while nContagem < 10
+    @ nLinha++,46 say Transform(nContagem++, cPictureContagem) + " - " + AllTrim( cNome )  
 enddo
+
+@ 03,44 to 16,70 double 
 
 Inkey(0)
