@@ -82,4 +82,6 @@ Endif
 
 @ 11,14 say "Maringa, " + Transform( nDia, "99" ) + " de " + cMesExtenso + " de " + Transform( nAno, "9999" ) + Space(3) + " ( " + cSemanaExt + " )" 
 
+alert("Bem Vindo")
+
 Inkey(0)

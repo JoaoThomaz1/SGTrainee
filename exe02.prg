@@ -1,6 +1,6 @@
 // Joao Vitor Rodrigues Thomaz
 
-Set color to N/BG
+Set color to BG/N
 
 Clear
 
@@ -10,25 +10,39 @@ Set date to british
 Set epoch to 1930
 Set Century on
 
-cNomeEmpresa := "Academia - Cadastro de Novo Cliente"
-cNome 		 := Space(15)
-nIdade		 := 0
-nPeso 		 := 0
+cNomeEmpresa   := "Academia - Cadastro de Novo Cliente"
+aOpcoesArray   := { "Sim", "Nao" }
+cMensagemAlert := "Deseja Sair do Programa?"
 
-@ 02,10 to 18,60 double
+do while .t.
+    cNome 		 := Space(20)
+    nIdade		 := 0
+    nPeso 		 := 0
+    nOpcoesAlert := 0
+    cCorPadrao   := "BG/N"
 
-@ 04,18 Say cNomeEmpresa
-
-//AVANÇADO
-	
-@ 10,25 Say "Nome: "
-@ 11,25 Say "Idade: "
-@ 12,25 Say "Peso: "
-
-@ 10,32 get cNome  picture "@!"  valid !Empty(cNome ) Color ("N/BG")                 //para poder capturar coisas digitadas pelo user
-@ 11,31 get nIdade picture "999" valid !Empty(nIdade) Color ("N/BG")  
-@ 12,32 get nPeso  picture "999" valid !Empty(nPeso ) Color ("N/BG")  
-read	//sempre finalizar com read para que armazene o que foi digitado
+    @ 02,10 to 18,60 double
+    
+    @ 04,18 Say cNomeEmpresa
+    
+    //AVANÇADO
+        
+    @ 10,25 Say "Nome..: "
+    @ 11,25 Say "Idade.: "
+    @ 12,25 Say "Peso..: "
+    
+    @ 10,34 get cNome  picture "@!"  valid !Empty(cNome ) Color ( cCorPadrao )                 //para poder capturar coisas digitadas pelo user
+    @ 11,34 get nIdade picture "999" valid !Empty(nIdade) Color ( cCorPadrao )  
+    @ 12,34 get nPeso  picture "999" valid !Empty(nPeso ) Color ( cCorPadrao )  
+    read	//sempre finalizar com read para que armazene o que foi digitado
+    
+    if LastKey()==27
+        nOpcoesAlert = Alert( cMensagemAlert, aOpcoesArray, "N/W" )
+        if nOpcoesAlert = 1
+            exit
+        endif
+    endif
+enddo
 
 
 //PADRÃO

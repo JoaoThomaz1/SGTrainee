@@ -201,7 +201,6 @@ if nAnosDeFabricacao > 0
     if nValidacaoPorcentagemAnoB > 0.08
         nNovoValorSeguroB += nValorBaseSegB * 0.08
     endif
-
 endif
 
 //Validacao porcentagem por Uso Destinado
@@ -222,12 +221,12 @@ nNovoValorSeguroTrimestralA := nNovoValorSeguroA / 4
 nNovoValorSeguroMensalB     := nNovoValorSeguroB / 12
 nNovoValorSeguroTrimestralB := nNovoValorSeguroA / 4
 
-cCorSeguroA := "W/G"
-cCorSeguroB := "W/R"
+cCorSeguroA :="W/G"
+cCorSeguroB :="W/R"
 
 if nNovoValorSeguroA > nNovoValorSeguroB
-    cCorSeguroA := "W/R"
-    cCorSeguroB := "W/G"
+    cCorSeguroA :="W/R"
+    cCorSeguroB :="W/G"
 endif
 
 //Cotacao Seguradora A e B
@@ -235,30 +234,30 @@ endif
 
 @ 04,00 to 10,40
 @ 04,41 to 10,79
-@ 06,01 to 06,39 color ( cCorSeguroA )
-@ 06,42 to 06,78 color ( cCorSeguroB )
 
+Set Color To cCorSeguroA
+
+@ 05,01 clear to 09,39
+
+@ 06,01 to 06,39
+
+Set Color To cCorSeguroB
+
+@ 05,43 clear to 09,78
+
+@ 06,42 to 06,78
 //Cabecalho Seguradora A
-@ 05,01 say Space(39) color ( cCorSeguroA )
-@ 07,01 say Space(39) color ( cCorSeguroA )
-@ 08,01 say Space(39) color ( cCorSeguroA )
-@ 09,01 say Space(39) color ( cCorSeguroA )
-
-@ 05,01 say cNomeSeguradoraA                                                            color ( cCorSeguroA )
-@ 08,01 say "Trimestral.: " + Transform( nNovoValorSeguroMensalA,     cPictureValorFip) color ( cCorSeguroA )
-@ 07,01 say "Mensal.....: " + Transform( nNovoValorSeguroTrimestralA, cPictureValorFip) color ( cCorSeguroA )
-@ 09,01 say "Anual......: " + Transform( nNovoValorSeguroA,           cPictureValorFip) color ( cCorSeguroA )
+@ 05,01 say cNomeSeguradoraA                                                            
+@ 08,01 say "Trimestral.: " + Transform( nNovoValorSeguroMensalA,     cPictureValorFip) 
+@ 07,01 say "Mensal.....: " + Transform( nNovoValorSeguroTrimestralA, cPictureValorFip) 
+@ 09,01 say "Anual......: " + Transform( nNovoValorSeguroA,           cPictureValorFip) 
 
 //Cabecalho Seguradora B
-@ 05,43 say Space(36) color ( cCorSeguroB )
-@ 07,43 say Space(36) color ( cCorSeguroB )
-@ 08,43 say Space(36) color ( cCorSeguroB )
-@ 09,43 say Space(36) color ( cCorSeguroB )
 
-@ 05,42 say cNomeSeguradoraB                                                            color ( cCorSeguroB )
-@ 07,42 say "Mensal.....: " + Transform( nNovoValorSeguroMensalB,     cPictureValorFip) color ( cCorSeguroB )
-@ 08,42 say "Trimestral.: " + Transform( nNovoValorSeguroTrimestralB, cPictureValorFip) color ( cCorSeguroB )
-@ 09,42 say "Anual......: " + Transform( nNovoValorSeguroB,           cPictureValorFip) color ( cCorSeguroB )
+@ 05,42 say cNomeSeguradoraB                                                            
+@ 07,42 say "Mensal.....: " + Transform( nNovoValorSeguroMensalB,     cPictureValorFip) 
+@ 08,42 say "Trimestral.: " + Transform( nNovoValorSeguroTrimestralB, cPictureValorFip) 
+@ 09,42 say "Anual......: " + Transform( nNovoValorSeguroB,           cPictureValorFip) 
 
 nMesCotacao := Month( dCotacao ) + 1
 nAnoCotacao := Year ( dCotacao )
