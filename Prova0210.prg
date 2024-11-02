@@ -221,12 +221,12 @@ nNovoValorSeguroTrimestralA := nNovoValorSeguroA / 4
 nNovoValorSeguroMensalB     := nNovoValorSeguroB / 12
 nNovoValorSeguroTrimestralB := nNovoValorSeguroA / 4
 
-cCorSeguroA :="W/G"
-cCorSeguroB :="W/R"
+cCorSeguroA := "W/G"
+cCorSeguroB := "W/R"
 
 if nNovoValorSeguroA > nNovoValorSeguroB
-    cCorSeguroA :="W/R"
-    cCorSeguroB :="W/G"
+    cCorSeguroA := "W/R"
+    cCorSeguroB := "W/G"
 endif
 
 //Cotacao Seguradora A e B
@@ -235,17 +235,12 @@ endif
 @ 04,00 to 10,40
 @ 04,41 to 10,79
 
-Set Color To cCorSeguroA
+Set Color To ( cCorSeguroA ) 
 
 @ 05,01 clear to 09,39
 
 @ 06,01 to 06,39
 
-Set Color To cCorSeguroB
-
-@ 05,43 clear to 09,78
-
-@ 06,42 to 06,78
 //Cabecalho Seguradora A
 @ 05,01 say cNomeSeguradoraA                                                            
 @ 08,01 say "Trimestral.: " + Transform( nNovoValorSeguroMensalA,     cPictureValorFip) 
@@ -253,6 +248,11 @@ Set Color To cCorSeguroB
 @ 09,01 say "Anual......: " + Transform( nNovoValorSeguroA,           cPictureValorFip) 
 
 //Cabecalho Seguradora B
+Set Color To ( cCorSeguroB )
+
+@ 05,43 clear to 09,78
+
+@ 06,42 to 06,78
 
 @ 05,42 say cNomeSeguradoraB                                                            
 @ 07,42 say "Mensal.....: " + Transform( nNovoValorSeguroMensalB,     cPictureValorFip) 
@@ -261,10 +261,13 @@ Set Color To cCorSeguroB
 
 nMesCotacao := Month( dCotacao ) + 1
 nAnoCotacao := Year ( dCotacao )
+if nMesCotacao = 13
+    nMesCotacao = 01
+endif
 cDataCotacao:= "01/" + Transform( nMesCotacao, "99" ) + "/" + Transform( nAnoCotacao, cPictureAno )
-dCotacaoDia := ctod( cDataCotacao ) - 1
-nDiaFinalMes:= Day( dCotacaoDia )
+dCotacaoDia := ctod( cDataCotacao )
+nDiaFinalMes:= Day( dCotacaoDia - 1 )
 
-@ 12,02 say "Cotacao valida ate " + Transform( nDiaFinalMes, "99" ) + " de " + cMesExtenso + " de " + Transform( nAnoCotacao, cPictureAno )
+@ 12,02 say "Cotacao valida ate " + Transform( nDiaFinalMes, "99" ) + " de " + cMesExtenso + " de " + Transform( nAnoCotacao, cPictureAno ) color ( cCorPadrao )
 
 Inkey(0)

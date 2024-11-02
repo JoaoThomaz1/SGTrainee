@@ -15,6 +15,7 @@ nDia        := Day  (dAtual)
 nDiaSemana  := DoW  (dAtual)
 cMesExtenso := ""
 cSemanaExt  := ""
+dTeste      := CToD("01/01/25")
 
 //If para data cabecalho
 If nMes     == 1
@@ -82,6 +83,9 @@ Endif
 
 @ 11,14 say "Maringa, " + Transform( nDia, "99" ) + " de " + cMesExtenso + " de " + Transform( nAno, "9999" ) + Space(3) + " ( " + cSemanaExt + " )" 
 
+@ 13,01 say DToC( dTeste - 1 )
+
+inkey(0)
 alert("Bem Vindo")
 
 Inkey(0)
