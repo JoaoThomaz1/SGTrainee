@@ -260,11 +260,10 @@ Set Color To ( cCorSeguroB )
 @ 09,42 say "Anual......: " + Transform( nNovoValorSeguroB,           cPictureValorFip) 
 
 nMesCotacao := Month( dCotacao ) + 1
-nAnoCotacao := Year ( dCotacao )
 if nMesCotacao = 13
     nMesCotacao = 01
 endif
-cDataCotacao:= "01/" + Transform( nMesCotacao, "99" ) + "/" + Transform( nAnoCotacao, cPictureAno )
+cDataCotacao:= "01/" + Transform( ( dCotacao ), "99" ) + "/" + Transform( year( dCotacao ), cPictureAno )
 dCotacaoDia := ctod( cDataCotacao )
 nDiaFinalMes:= Day( dCotacaoDia - 1 )
 
