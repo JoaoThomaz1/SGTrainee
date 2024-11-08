@@ -102,9 +102,6 @@ do while .t.
                 endif
             endif
             
-            cListaSenhas   += cSenha
-            cListaDatas    += DToC( dCadastro )
-             
             nTamanhoSenha := Len( alltrim( cSenha ) )
             
             //Se a senha e maior ou igual a 8
@@ -128,7 +125,7 @@ do while .t.
                 nCodigo--
                 loop
             endif   
-
+            
             //Se contem Numero
             do while nInicioSubStr <= nTamanhoSenha
                 if SubStr( alltrim( cSenha ), nInicioSubStr++, 1  ) $ cNumeroSenha 
@@ -172,7 +169,8 @@ do while .t.
                 nCodigo--
                 loop
             endif   
-            
+            cListaSenhas   += cSenha
+            cListaDatas    += DToC( dCadastro )
         enddo
     Elseif nOpcaoMenu = 2
         if nCodigo = 0
@@ -214,8 +212,8 @@ do while .t.
             nComecoSenha := 1
             
             if nCodigoDigitado > 1
-                nComecoData  += 8
-                nComecoSenha += 12
+                nComecoData  := ( nComecoData  += 8  ) * ( nCodigoDigitado - 1 )
+                nComecoSenha := ( nComecoSenha += 12 ) * ( nCodigoDigitado - 1 )
             endif
             
             cSenhaEscolhida:= SubStr( cListaSenhas, nComecoSenha, 12 )
@@ -225,33 +223,31 @@ do while .t.
             @ 10,26 say " Data Cadastro.....: " + cDataEscolhida
 
             nLinhaCalendario  := 15
-            nColunaCalendario := 31
+            nColunaCalendario := 25
             
             //Calendario
-            dEscolhida    := CToD( cDataEscolhida )
-            nMesEscolhido := Month( dEscolhida )
-            cDataEscolhida := "01/" + Transform( nMesEscolhido, "99" ) + "/" + Transform( year( dEscolhida ), "99" )
+            dEscolhida     := CToD( cDataEscolhida )
+            nDiaCadastro   := day( dEscolhida )
+            nMesEscolhido  := Month( dEscolhida )
+            cDataEscolhida := "01/" + Transform( nMesEscolhido, "99" ) + "/" + Transform( year( dEscolhida ), "9999" )
             dEscolhida     := ctod( cDataEscolhida )
             nDiaComecoMes  := Day( dEscolhida )
             
             //Dia da Semana
             nDiaSemana    := DoW( dEscolhida )
+            alert(str(nDiaSemana))
 
+            nColunaCalendario += (4 * nDiaSemana)  
 
-            do while .t.
-                If nDiaSemana > 1
-                    nColunaCalendario += 4 * nDiaSemana
-                    exit
-                Endif
-            enddo
-        
+            alert(str(nColunaCalendario))
+
             //Ultimo dia do Mes
             nMesEscolhido += 1
             if nMesEscolhido = 13
                 nMesEscolhido := 01
             endif
         
-            cDataEscolhida := "01/" + Transform( nMesEscolhido, "99" ) + "/" + Transform( year( dEscolhida ), "99" )
+            cDataEscolhida := "01/" + Transform( nMesEscolhido, "99" ) + "/" + Transform( year( dEscolhida ), "9999" )
             dEscolhida     := ctod( cDataEscolhida )
             nDiaFinalMes   := Day( dEscolhida - 1 )
             
@@ -268,7 +264,7 @@ do while .t.
             
             do while nDiaFinalMes >= nDiaComecoMes
 
-                @ nLinhaCalendario,nColunaCalendario say Transform( nDiaComecoMes, "99" )
+                @ nLinhaCalendario, nColunaCalendario say Transform( nDiaComecoMes, "99" )
 
                 nColunaCalendario += 3
 

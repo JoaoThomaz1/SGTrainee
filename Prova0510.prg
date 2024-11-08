@@ -312,5 +312,4 @@ do while .t.
             exit
         endif
     endif
-    
 enddo
