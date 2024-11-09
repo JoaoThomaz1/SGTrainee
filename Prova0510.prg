@@ -56,20 +56,20 @@ do while .t.
         //Dados do Cliente
         cUsuarioDigitado := Space(10)
         cSenhaDigitada   := Space(10)
-        cNomeCliente     := Space(30)
         dPedido          := CToD( DToC( Date() ) )
-        nLimiteCliente   := 0
         nOpcaoMenu       := 0
 
         Set color to 0/7
         
         @ 15,25 Clear to 20,55 
         @ 15,25 to 20,55 
-        
+
+        //Cabecalho Login
         @ 15,25 say " Senha de acesso:" + Space(14) color ( "15/1" )
         @ 17,30 say "Usuario...: "
         @ 18,30 say "Senha.....: "
         
+        //Get Login
         @ 17,43 get cUsuarioDigitado picture cPictureCaracter valid !Empty( cUsuarioDigitado ) color ( "15/1" )
         @ 18,43 get cSenhaDigitada   picture cPictureCaracter valid !Empty( cSenhaDigitada ) color ( "1/1" )
         read
@@ -78,6 +78,7 @@ do while .t.
             Exit
         endif
 
+        //Validacao login
         If Alltrim( cUsuarioDigitado ) == cUsuarioCorreto .and. Alltrim( cSenhaDigitada ) == cSenhaCorreta                
             do while .t.
                 Set Color to 15/7
@@ -94,8 +95,11 @@ do while .t.
                 
                 Set Color to ( 0/7, 15/1 )
 
-                @ 02,15 prompt " Frutaria "
-                @ 02,55 prompt " Finalizar "
+                @ 24,00 say Space(80)
+                
+                //Menu superior
+                @ 02,15 prompt " Frutaria  " message " Modulo de pedidos de frutaria "
+                @ 02,55 prompt " Finalizar " message " Finalizar o Sistema "
 
                 menu to nOpcao
 
@@ -110,6 +114,7 @@ do while .t.
                     
                     @ 24,00 say Space(80)
                     
+                    //Menu Inicial 
                     @ 05,04 prompt " Efetuar Pedidos    "  message " Modulo para efetuar Pedidos    "
                     @ 06,04 prompt " Trocar de Usuario  "  message " Modulo para troca de Usuario   "
                     @ 07,04 prompt " Finalizar o Sistema " message " Opcao para finalizar o Sistema "
@@ -121,8 +126,10 @@ do while .t.
                         //tela de Pedidos
                         do while .t.
                             //Variavel Tela de Venda
-                            nLinha        := 08
-                            nTotalVenda   := 0
+                            nLinha         := 08
+                            nTotalVenda    := 0
+                            cNomeCliente   := Space(30)
+                            nLimiteCliente := 0
 
                             Set color to 15/3
                             
@@ -178,17 +185,25 @@ do while .t.
                                 @ 06,02 say " Cod. | Descricao Produto  | Qtde. | Valor Unit. | %Desc. |  Total  "
                                 @ 07,01 to 07,78
 
+                                //Codigo do produto
                                 @ nLinha,03 get nCodigoDigitado picture cPictureNumerico4 valid nCodigoDigitado >= 0  Color ( "15/3" )
                                 read
                                 
+                                //Se quiser Sair, Cancelar ou Processar a Venda
                                 If Lastkey() == 27
-                                    nAlertOpcao := Alert( "Sair da Venda?", { "Sim", "Nao" }, "4/7" )
+                                    nAlertOpcao := Alert( "", { "Digitar Novamente", "Cancelar a Venda", "Processar Venda" }, "4/7" )
                                     if nAlertOpcao = 1
-                                        nNumeroPedido--
-                                        exit
+                                        Loop
+                                    elseif nAlertOpcao = 2
+                                        nAlertOpcao:= Alert( "Certeza que quer cancelar?", { "Sim", " Nao" }, "4/15" )
+                                        if nAlertOpcao = 1
+                                            nNumeroPedido--
+                                            Exit
+                                        endif
                                     endif
                                 Endif
-                                
+
+                                //Qual Produto Escolhido                                
                                 If nCodigoDigitado = nCodigoProd1
                                     cNomeProduto := "Amora Preta"
                                     nPrecoUnit   := 1.50
@@ -270,8 +285,18 @@ do while .t.
                                 //Impressao do total produto e total venda
                                 @ nLinha++,62 say Transform( nTotalProduto, cPictureValores )
                                 @ 22,47       say "Total Compra: " + Transform( nTotalVenda, cPictureTotalComp ) 
-
                                 
+                                //Reducao do estoque principal
+                                If nCodigoDigitado = nCodigoProd1
+                                    nEstoqueProd1 -= nEstoqueProd
+                                Elseif nCodigoDigitado = nCodigoProd2
+                                    nEstoqueProd2 -= nEstoqueProd
+                                Elseif nCodigoDigitado = nCodigoProd3
+                                    nEstoqueProd3 -= nEstoqueProd
+                                Elseif nCodigoDigitado = nCodigoProd4
+                                    nEstoqueProd4 -= nEstoqueProd
+                                endif
+
                                 //Se Quiser Processar a venda
                                 if nAlertOpcao = 3
                                     Exit
@@ -289,10 +314,8 @@ do while .t.
                         
                     Elseif nOpcao == 2
                         exit
-                    else
-                        exit
                     Endif
-                elseif nOpcao == 3 .or. LastKey() == 27
+                elseif nOpcao == 2 .or. LastKey() == 27
                     exit
                 endif
             enddo
@@ -300,7 +323,7 @@ do while .t.
             Alert( "Usuario ou Senha Incorreta", { "Ok" }, "0/15" )
             loop
         Endif
-        If nOpcao == 3 .or. LastKey() == 27
+        If nOpcao == 3 .or. nOpcao == 2 .or. LastKey() == 27
             exit
         endif
     enddo
