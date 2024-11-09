@@ -20,14 +20,13 @@ cPalavraCerta   := ""
 cMensagem       := ""
 cEnforcado      := "Enforcado! Jogar Novamente?"
 cVitoria        := "Voce Venceu! Jogar Novamente?"
+nAlertOpcao     := 0
 //Dicas
 cDicas1     := Space(25)
 cDicas2     := Space(25)
 cDicas3     := Space(25)
 nErros      := 0
-//Letras
-cLetrasDisp    := "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-cLetrasUsadas  := ""
+
 //Boneco
 cCabeca := " 0 "
 cBracos := "/|\"
@@ -44,12 +43,13 @@ nAlertFimJogo:= 0
 
 do while .t.
     Set Color to 0/15
-
     Clear
+
+    cLetrasUsadas  := ""
 
     //Corpo do jogo
     @ 00,00 to 24,79
-    @ 00,35 say " JOGO DA FORCA "
+    @ 00,33 say " JOGO DA FORCA "
 
     @ 04,01 to 04,78
     @ 01,02 say " Nome......: "
@@ -186,15 +186,14 @@ do while .t.
 
         //Se fim de jogo
         if lFimDeJogo
+            Inkey( 3 )
             nAlertFimJogo := Alert( cMensagem, { "Sim", "Nao" }, cAlertNeutro )
-            If nAlertFimJogo == 1
-                loop
-            else
-                exit
-            endif
+            exit
         endif
     enddo
     if nAlertFimJogo == 2 .or. nAlertOpcao == 3
         exit
+    elseif nAlertFimJogo == 1
+        loop
     endif
 enddo
