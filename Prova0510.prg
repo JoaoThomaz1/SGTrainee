@@ -90,8 +90,8 @@ do while .t.
                 @ 03,00 clear to 24,80
                 
                 @ 00,00 say " SISTEMA DE GERECIMENTO EMPRESARIAL - HARBOUR  | " + cUsuarioDigitado + Space(12) color ( "15/1" )
-                @ 00,60 say " | " + dtoc(date()) + " " + SubStr( Time(), 1, 5) + Space(20) color ( "15/1" )
-                @ 01,00 say cNomeFrutaria + Space(70) color ( "1/15" )
+                @ 00,60 say " | " + dtoc(date()) + " " + SubStr( Time(), 1, 5) + Space(20)                     color ( "15/1" )
+                @ 01,00 say cNomeFrutaria + Space(70)                                                          color ( "1/15" )
                 
                 Set Color to ( 0/7, 15/1 )
 

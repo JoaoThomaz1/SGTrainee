@@ -4,20 +4,14 @@ Set Date to British
 Set Epoch to 1940
 
 //Variavel
-cNomeJogador    := Space(15)
-cPalavraChave   := Space(15)
 cDificuldade1   := " Facil "
 cDificuldade2   := " Medio "
 cDificuldade3   := " Dificil "
 cCorPadrao      := "0/15" 
 cCorInvisivel   := "7/7"
-cDesenho        := ""
-lFimDeJogo      := .f. 
 nColunaChutes   := 45
 nColunaInicial  := 23
 nLinhaDesenho   := 09
-cPalavraCerta   := ""
-cMensagem       := ""
 cEnforcado      := "Enforcado! Jogar Novamente?"
 cVitoria        := "Voce Venceu! Jogar Novamente?"
 nAlertOpcao     := 0
@@ -25,7 +19,6 @@ nAlertOpcao     := 0
 cDicas1     := Space(25)
 cDicas2     := Space(25)
 cDicas3     := Space(25)
-nErros      := 0
 
 //Boneco
 cCabeca := " 0 "
@@ -44,9 +37,16 @@ nAlertFimJogo:= 0
 do while .t.
     Set Color to 0/15
     Clear
-
+    
+    lFimDeJogo     := .f. 
+    cNomeJogador   := Space(15)
+    cPalavraChave  := Space(15)
     cLetrasUsadas  := ""
-
+    nErros         := 0
+    cDesenho       := ""
+    cPalavraCerta  := ""
+    cMensagem      := ""
+    
     //Corpo do jogo
     @ 00,00 to 24,79
     @ 00,33 say " JOGO DA FORCA "
@@ -99,7 +99,7 @@ do while .t.
         @ 05,02 say " Letra Escolhida....: "
         @ 07,02 say " Palavra Escolhida..: "
 
-        @ 05,24 get cLetraChute picture cPictureCaracter valid cLetraChute $ cLetrasDisp
+        @ 05,24 get cLetraChute picture cPictureCaracter valid !Empty( cLetraChute )
         read
 
         If Lastkey() == 27
